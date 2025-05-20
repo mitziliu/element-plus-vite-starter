@@ -1,6 +1,12 @@
-export type PurchaseOrderStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED'
+export type PurchaseOrderStatus =
+  | 'PENDING' // 待核准
+  | 'APPROVED' // 已核准
+  | 'IN_PRODUCTION' // 生產中
+  | 'IN_TRANSIT' // 運輸中
+  | 'DELAYED' // 延遲
+  | 'COMPLETED' // 已完成
 
-export interface PurchaseOrderEntity {
+export interface PurchaseOrder {
   id: string
   orderNumber: string
   supplierName: string

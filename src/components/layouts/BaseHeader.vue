@@ -9,10 +9,10 @@ import { toggleDark } from '~/composables'
     <el-menu-item index="/">
       <div class="flex items-center justify-center gap-2">
         <div class="text-xl" i-ep-element-plus />
-        <span>Element Plus</span>
+        <span>供應鏈管理系統</span>
       </div>
     </el-menu-item>
-    <el-sub-menu index="2">
+    <!-- <el-sub-menu index="2">
       <template #title>
         Workspace
       </template>
@@ -42,25 +42,25 @@ import { toggleDark } from '~/composables'
     </el-sub-menu>
     <el-menu-item index="3" disabled>
       Info
-    </el-menu-item>
-    <el-menu-item index="4">
+    </el-menu-item> -->
+    <!-- <el-menu-item index="4">
       Orders
-    </el-menu-item>
+    </el-menu-item> -->
 
-    <el-menu-item h="full" @click="toggleDark()">
+    <!-- <el-menu-item h="full" @click="toggleDark()">
       <button
         class="w-full cursor-pointer border-none bg-transparent"
         style="height: var(--ep-menu-item-height)"
       >
         <i inline-flex i="dark:ep-moon ep-sunny" />
       </button>
-    </el-menu-item>
+    </el-menu-item> -->
 
-    <el-menu-item h="full">
+    <!-- <el-menu-item h="full">
       <a class="size-full flex items-center justify-center" :href="repository.url" target="_blank">
         <div i-ri-github-fill />
       </a>
-    </el-menu-item>
+    </el-menu-item> -->
   </el-menu>
 </template>
 

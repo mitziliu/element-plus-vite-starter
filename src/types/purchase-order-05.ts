@@ -1,6 +1,6 @@
 export type PurchaseOrderStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED'
 
-export interface PurchaseOrderEntity {
+export interface PurchaseOrder {
   id: string
   orderNumber: string
   supplierName: string

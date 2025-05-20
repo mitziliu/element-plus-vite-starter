@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import type { PurchaseOrder } from '~/types/purchase-order-04'
+import type { PurchaseOrder, PurchaseOrderStatus } from '~/types/purchase-order-05'
 import { computed, ref } from 'vue'
 
-// 定義分頁相關的狀態
+// 分頁設定
 const currentPage = ref(1)
 const pageSize = ref(10)
-const total = ref(12)
 
 // 假資料
 const mockData: PurchaseOrder[] = [
@@ -15,7 +14,7 @@ const mockData: PurchaseOrder[] = [
     supplierName: '鼎新電子',
     supplierCode: 'S001',
     materialNumber: 'IC001',
-    materialDescription: '測試料號 IC001',
+    materialDescription: '電子元件',
     quantity: 100,
     unit: 'PCS',
     expectedDeliveryDate: '2025-03-25',
@@ -30,11 +29,11 @@ const mockData: PurchaseOrder[] = [
     supplierName: '宏碁科技',
     supplierCode: 'S002',
     materialNumber: 'DIS001',
-    materialDescription: '測試料號 DIS001',
+    materialDescription: '顯示設備',
     quantity: 50,
-    unit: 'PCS',
+    unit: 'SET',
     expectedDeliveryDate: '2025-03-18',
-    status: 'APPROVED',
+    status: 'PROCESSING',
     remarks: '測試資料',
     createdAt: '2025-03-04',
     updatedAt: '2025-03-04',
@@ -45,11 +44,11 @@ const mockData: PurchaseOrder[] = [
     supplierName: '廣達電腦',
     supplierCode: 'S003',
     materialNumber: 'PWR001',
-    materialDescription: '測試料號 PWR001',
+    materialDescription: '電源設備',
     quantity: 200,
     unit: 'PCS',
     expectedDeliveryDate: '2025-03-12',
-    status: 'IN_PRODUCTION',
+    status: 'COMPLETED',
     remarks: '測試資料',
     createdAt: '2025-03-01',
     updatedAt: '2025-03-01',
@@ -60,11 +59,11 @@ const mockData: PurchaseOrder[] = [
     supplierName: '金寶電子',
     supplierCode: 'S004',
     materialNumber: 'IC002',
-    materialDescription: '測試料號 IC002',
+    materialDescription: '電子元件',
     quantity: 150,
     unit: 'PCS',
     expectedDeliveryDate: '2025-03-10',
-    status: 'IN_TRANSIT',
+    status: 'PROCESSING',
     remarks: '測試資料',
     createdAt: '2025-02-28',
     updatedAt: '2025-02-28',
@@ -75,11 +74,11 @@ const mockData: PurchaseOrder[] = [
     supplierName: '仁寶電腦',
     supplierCode: 'S005',
     materialNumber: 'STO001',
-    materialDescription: '測試料號 STO001',
-    quantity: 80,
-    unit: 'PCS',
+    materialDescription: '儲存設備',
+    quantity: 75,
+    unit: 'SET',
     expectedDeliveryDate: '2025-03-05',
-    status: 'DELAYED',
+    status: 'CANCELLED',
     remarks: '測試資料',
     createdAt: '2025-02-25',
     updatedAt: '2025-02-25',
@@ -90,8 +89,8 @@ const mockData: PurchaseOrder[] = [
     supplierName: '鼎新電子',
     supplierCode: 'S001',
     materialNumber: 'IC003',
-    materialDescription: '測試料號 IC003',
-    quantity: 120,
+    materialDescription: '電子元件',
+    quantity: 300,
     unit: 'PCS',
     expectedDeliveryDate: '2025-03-01',
     status: 'COMPLETED',
@@ -105,9 +104,9 @@ const mockData: PurchaseOrder[] = [
     supplierName: '宏碁科技',
     supplierCode: 'S002',
     materialNumber: 'DIS002',
-    materialDescription: '測試料號 DIS002',
-    quantity: 60,
-    unit: 'PCS',
+    materialDescription: '顯示設備',
+    quantity: 25,
+    unit: 'SET',
     expectedDeliveryDate: '2025-02-28',
     status: 'COMPLETED',
     remarks: '測試資料',
@@ -116,11 +115,11 @@ const mockData: PurchaseOrder[] = [
   },
   {
     id: '8',
-    orderNumber: 'PO-20250210-003',
+    orderNumber: 'PO-20250210-033',
     supplierName: '廣達電腦',
     supplierCode: 'S003',
     materialNumber: 'PWR002',
-    materialDescription: '測試料號 PWR002',
+    materialDescription: '電源設備',
     quantity: 180,
     unit: 'PCS',
     expectedDeliveryDate: '2025-02-25',
@@ -131,12 +130,12 @@ const mockData: PurchaseOrder[] = [
   },
   {
     id: '9',
-    orderNumber: 'PO-20250205-009',
+    orderNumber: 'PO-20250205-026',
     supplierName: '金寶電子',
     supplierCode: 'S004',
     materialNumber: 'IC004',
-    materialDescription: '測試料號 IC004',
-    quantity: 90,
+    materialDescription: '電子元件',
+    quantity: 250,
     unit: 'PCS',
     expectedDeliveryDate: '2025-02-20',
     status: 'COMPLETED',
@@ -150,9 +149,9 @@ const mockData: PurchaseOrder[] = [
     supplierName: '仁寶電腦',
     supplierCode: 'S005',
     materialNumber: 'STO002',
-    materialDescription: '測試料號 STO002',
-    quantity: 70,
-    unit: 'PCS',
+    materialDescription: '儲存設備',
+    quantity: 60,
+    unit: 'SET',
     expectedDeliveryDate: '2025-02-15',
     status: 'COMPLETED',
     remarks: '測試資料',
@@ -161,12 +160,12 @@ const mockData: PurchaseOrder[] = [
   },
   {
     id: '11',
-    orderNumber: 'PO-20250128-006',
+    orderNumber: 'PO-20250128-009',
     supplierName: '鼎新電子',
     supplierCode: 'S001',
     materialNumber: 'IC005',
-    materialDescription: '測試料號 IC005',
-    quantity: 110,
+    materialDescription: '電子元件',
+    quantity: 400,
     unit: 'PCS',
     expectedDeliveryDate: '2025-02-10',
     status: 'COMPLETED',
@@ -176,13 +175,13 @@ const mockData: PurchaseOrder[] = [
   },
   {
     id: '12',
-    orderNumber: 'PO-20250125-011',
+    orderNumber: 'PO-20250125-017',
     supplierName: '宏碁科技',
     supplierCode: 'S002',
     materialNumber: 'DIS003',
-    materialDescription: '測試料號 DIS003',
-    quantity: 45,
-    unit: 'PCS',
+    materialDescription: '顯示設備',
+    quantity: 35,
+    unit: 'SET',
     expectedDeliveryDate: '2025-02-05',
     status: 'COMPLETED',
     remarks: '測試資料',
@@ -191,124 +190,112 @@ const mockData: PurchaseOrder[] = [
   },
 ]
 
-// 計算當前頁面的數據
-const currentPageData = computed(() => {
+// 計算分頁後的資料
+const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value
   const end = start + pageSize.value
   return mockData.slice(start, end)
 })
 
-// 處理分頁大小改變
-function handleSizeChange(val: number) {
-  pageSize.value = val
-  currentPage.value = 1
-}
-
-// 處理當前頁改變
-function handleCurrentChange(val: number) {
-  currentPage.value = val
-}
-
-// 格式化日期
-function formatDate(date: string) {
-  return date
-}
-
-// 獲取狀態類型
-function getStatusType(status: string): 'warning' | 'primary' | 'info' | 'success' | 'danger' {
-  const statusMap: Record<string, 'warning' | 'primary' | 'info' | 'success' | 'danger'> = {
+// 狀態相關函數
+function getStatusType(status: PurchaseOrderStatus): 'warning' | 'primary' | 'success' | 'danger' {
+  const statusMap: Record<PurchaseOrderStatus, 'warning' | 'primary' | 'success' | 'danger'> = {
     PENDING: 'warning',
-    APPROVED: 'primary',
-    IN_PRODUCTION: 'info',
-    IN_TRANSIT: 'success',
-    DELAYED: 'danger',
+    PROCESSING: 'primary',
     COMPLETED: 'success',
+    CANCELLED: 'danger',
   }
-  return statusMap[status] || 'info'
+  return statusMap[status]
 }
 
-// 獲取狀態文字
-function getStatusText(status: string) {
-  const statusMap: Record<string, string> = {
+function getStatusText(status: PurchaseOrderStatus) {
+  const statusMap: Record<PurchaseOrderStatus, string> = {
     PENDING: '待核准',
-    APPROVED: '已核准',
-    IN_PRODUCTION: '生產中',
-    IN_TRANSIT: '運輸中',
-    DELAYED: '延遲',
+    PROCESSING: '處理中',
     COMPLETED: '已完成',
+    CANCELLED: '已取消',
   }
-  return statusMap[status] || status
+  return statusMap[status]
 }
 </script>
 
 <template>
-  <div class="mb-6 overflow-hidden rounded-lg bg-white shadow-sm">
-    <el-table :data="currentPageData" style="width: 100%" border>
+  <div>
+    <el-table
+      :data="paginatedData"
+      style="width: 100%"
+      border
+      class="mb-6"
+      :default-sort="{ prop: 'expectedDeliveryDate', order: 'descending' }"
+    >
+      <el-table-column type="index" width="60" label="序號" />
       <el-table-column type="selection" width="55" />
       <el-table-column prop="orderNumber" label="訂單編號" min-width="120">
         <template #default="{ row }">
           <span class="text-blue-600">{{ row.orderNumber }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createdAt" label="創建日期" min-width="100">
-        <template #default="{ row }">
-          {{ formatDate(row.createdAt) }}
-        </template>
-      </el-table-column>
+      <el-table-column prop="createdAt" label="創建日期" min-width="100" />
       <el-table-column prop="supplierName" label="供應商" min-width="120" />
-      <el-table-column prop="materialNumber" label="料號" min-width="120" />
-      <el-table-column prop="materialDescription" label="料號描述" min-width="150" />
+      <el-table-column prop="materialDescription" label="產品類別" min-width="120" />
       <el-table-column prop="quantity" label="數量" min-width="100">
         <template #default="{ row }">
           {{ row.quantity }} {{ row.unit }}
         </template>
       </el-table-column>
-      <el-table-column prop="expectedDeliveryDate" label="交貨日期" min-width="100">
+      <el-table-column prop="expectedDeliveryDate" label="交貨日期" min-width="100" sortable />
+      <el-table-column prop="status" label="狀態" min-width="100" sortable>
         <template #default="{ row }">
-          {{ formatDate(row.expectedDeliveryDate) }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="status" label="狀態" min-width="100">
-        <template #default="{ row }">
-          <el-tag :type="getStatusType(row.status)">
+          <el-tag
+            :type="getStatusType(row.status)"
+            effect="light"
+            size="small"
+          >
             {{ getStatusText(row.status) }}
           </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="200" fixed="right">
         <template #default="{ row }">
-          <el-button link type="primary" size="small">
+          <el-button
+            link
+            type="primary"
+            size="small"
+            class="mr-2"
+          >
             查看
           </el-button>
-          <el-button v-if="row.status === 'PENDING'" link type="success" size="small">
+          <el-button
+            v-if="row.status === 'PENDING'"
+            link
+            type="success"
+            size="small"
+            class="mr-2"
+          >
             核准
           </el-button>
-          <el-button v-if="row.status === 'PENDING'" link type="danger" size="small">
+          <el-button
+            v-if="row.status === 'PENDING'"
+            link
+            type="danger"
+            size="small"
+          >
             拒絕
-          </el-button>
-          <el-button v-if="row.status === 'APPROVED'" link type="warning" size="small">
-            追蹤
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <div class="flex items-center justify-between border-t px-6 py-4">
-      <div>
-        <p class="text-sm text-gray-700">
-          顯示 <span class="font-medium">{{ (currentPage - 1) * pageSize + 1 }}</span> 到
-          <span class="font-medium">{{ Math.min(currentPage * pageSize, total) }}</span> 共
-          <span class="font-medium">{{ total }}</span> 條結果
-        </p>
-      </div>
+    <div class="flex items-center justify-between">
+      <span class="text-sm text-gray-700">
+        顯示 {{ (currentPage - 1) * pageSize + 1 }} 到 {{ Math.min(currentPage * pageSize, mockData.length) }} 共 {{ mockData.length }} 條結果
+      </span>
       <el-pagination
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
-        :total="total"
-        :page-sizes="[10, 20, 50, 100]"
-        layout="prev, pager, next"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
+        :total="mockData.length"
+        :page-sizes="[10, 20, 30, 50]"
+        layout="total, sizes, prev, pager, next"
       />
     </div>
   </div>
@@ -320,7 +307,7 @@ function getStatusText(status: string) {
   --el-table-header-bg-color: #f9fafb;
 }
 
-.el-table th {
+.el-table :deep(th) {
   font-weight: 500;
   color: #6b7280;
   text-transform: uppercase;
@@ -328,14 +315,12 @@ function getStatusText(status: string) {
   letter-spacing: 0.05em;
 }
 
-.el-table td {
+.el-table :deep(td) {
   font-size: 0.875rem;
 }
 
 .el-tag {
   border-radius: 9999px;
-  padding: 0 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 0 0.75rem;
 }
 </style>
