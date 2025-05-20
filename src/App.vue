@@ -18,5 +18,6 @@
 
 .main-container {
   height: calc(100vh - var(--ep-menu-item-height) - 4px);
+  background-color: #f3f4f6;
 }
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { PurchaseOrder } from '~/types/purchase-order-04'
+import type { PurchaseOrder } from '~/types/purchase-order-0304'
 import { computed, ref } from 'vue'
 
 // 定義分頁相關的狀態

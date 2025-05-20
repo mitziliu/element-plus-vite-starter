@@ -1,4 +1,4 @@
-import type { PurchaseOrderEntity } from '~/types/purchase-order'
+import type { PurchaseOrderEntity } from '~/types/purchase-order-0708'
 import axios from 'axios'
 
 // 建立 axios 實例

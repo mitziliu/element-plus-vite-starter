@@ -2,7 +2,7 @@
 import type { TagProps } from 'element-plus'
 import type { PurchaseOrderEntity, PurchaseOrderStatus } from '~/types/purchase-order-0708'
 import { computed, onMounted, ref } from 'vue'
-import { getPurchaseOrders } from '~/composables/api01'
+import { getPurchaseOrders } from '~/composables/api02'
 
 // 分頁相關狀態
 const currentPage = ref(1)

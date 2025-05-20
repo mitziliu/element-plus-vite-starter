@@ -1,4 +1,4 @@
-import type { PurchaseOrderEntity } from '~/types/purchase-order'
+import type { PurchaseOrderEntity } from '~/types/purchase-order-0708'
 
 export const mockPurchaseOrders: PurchaseOrderEntity[] = [
   {
