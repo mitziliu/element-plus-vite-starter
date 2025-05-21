@@ -1,4 +1,4 @@
-import type { PurchaseOrder } from '~/types/purchase-order'
+import type { PurchaseOrder } from '~/types/purchase-order-09'
 
 export const mockPurchaseOrders: PurchaseOrder[] = [
   {

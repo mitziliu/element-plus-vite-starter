@@ -1,26 +1,50 @@
 <script lang="ts" setup>
-import type { PurchaseOrder, PurchaseOrderStatus } from '~/types/purchase-order'
-import { computed, ref } from 'vue'
-import { mockPurchaseOrders } from '~/assets/mocks/mock-purchase-orders'
+import type { PurchaseOrder, PurchaseOrderStatus } from '~/types/purchase-order-09'
+import { computed, onMounted, ref } from 'vue'
+import { getPurchaseOrdersApi } from '~/composables/api03'
 
-const purchaseOrders = ref<PurchaseOrder[]>(mockPurchaseOrders)
+const purchaseOrders = ref<PurchaseOrder[]>([])
 const currentPage = ref(1)
 const pageSize = ref(10)
-const total = computed(() => purchaseOrders.value.length)
+const total = ref(0)
+const loading = ref(false)
+const error = ref('')
 
-const paginatedData = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value
-  const end = start + pageSize.value
-  return purchaseOrders.value.slice(start, end)
-})
+const paginatedData = computed(() => purchaseOrders.value)
+
+async function getPurchaseOrderList() {
+  loading.value = true
+  try {
+    const response = await getPurchaseOrdersApi({
+      page: currentPage.value,
+      pageSize: pageSize.value,
+      sortBy: 'expectedDeliveryDate',
+      sortOrder: 'ASC',
+    })
+    purchaseOrders.value = response.Data.data.map(order => ({
+      ...order,
+      expectedDeliveryDate: order.expectedDeliveryDate.split('T')[0],
+    }))
+    total.value = response.Data.total
+  }
+  catch (err) {
+    error.value = '獲取訂單失敗'
+    console.error('獲取訂單失敗:', err)
+  }
+  finally {
+    loading.value = false
+  }
+}
 
 function handleSizeChange(val: number) {
   pageSize.value = val
   currentPage.value = 1
+  getPurchaseOrderList()
 }
 
 function handleCurrentChange(val: number) {
   currentPage.value = val
+  getPurchaseOrderList()
 }
 
 function getStatusType(status: PurchaseOrderStatus): 'warning' | 'primary' | 'success' | 'danger' | 'info' {
@@ -42,11 +66,21 @@ function getStatusText(status: PurchaseOrderStatus) {
   }
   return statusMap[status]
 }
+
+onMounted(() => {
+  getPurchaseOrderList()
+})
 </script>
 
 <template>
   <div>
-    <el-table :data="paginatedData" style="width: 100%" border :default-sort="{ prop: 'expectedDeliveryDate', order: 'ascending' }">
+    <el-table
+      v-loading="loading"
+      :data="paginatedData"
+      style="width: 100%"
+      border
+      :default-sort="{ prop: 'expectedDeliveryDate', order: 'ascending' }"
+    >
       <el-table-column type="index" width="50" />
       <el-table-column type="selection" width="55" />
       <el-table-column prop="orderNumber" label="訂單編號" min-width="120">

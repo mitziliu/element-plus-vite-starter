@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { PurchaseOrder, PurchaseOrderStatus } from '~/types/purchase-order'
+import type { PurchaseOrder, PurchaseOrderStatus } from '~/types/purchase-order-09'
 import { computed, onMounted, ref } from 'vue'
-import { getPurchaseOrdersApi } from '~/composables/api'
+import { getPurchaseOrdersApi } from '~/composables/api03'
 
 const purchaseOrders = ref<PurchaseOrder[]>([])
 const currentPage = ref(1)
